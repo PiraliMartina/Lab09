@@ -28,7 +28,19 @@ public class FXMLController {
 
     @FXML
     void doCalcolaConfini(ActionEvent event) {
-
+    	try {
+    		
+    		int anno = Integer.parseInt(txtAnno.getText());
+    		model.createGraph(anno);
+    		
+    		txtResult.setText("Elenco stati: "+model.elencoStatiConfini()+"\n");
+    		txtResult.appendText("Componenti connesse: "+model.componentiConnesse());
+    		
+    	} catch(NumberFormatException e) {
+    		txtResult.setText("Anno non corretto!");
+    	} catch(Exception e) {
+    		txtResult.setText("Errore!");
+    	}
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
