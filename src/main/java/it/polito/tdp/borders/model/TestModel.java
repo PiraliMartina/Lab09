@@ -17,6 +17,7 @@ public class TestModel {
 		System.out.println("Numero archi: "+model.edgeNumber());
 		System.out.println(model.elencoStatiConfini());
 		System.out.println(model.componentiConnesse());
+	
 		
 //		List<Country> countries = model.getCountries();
 //		System.out.format("Trovate %d nazioni\n", countries.size());

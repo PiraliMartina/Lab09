@@ -1,6 +1,8 @@
 package it.polito.tdp.borders.model;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -10,6 +12,9 @@ import org.jgrapht.Graphs;
 import org.jgrapht.alg.connectivity.ConnectivityInspector;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.traverse.BreadthFirstIterator;
+import org.jgrapht.traverse.DepthFirstIterator;
+import org.jgrapht.traverse.GraphIterator;
 
 import it.polito.tdp.borders.db.BordersDAO;
 
@@ -64,5 +69,35 @@ public class Model {
 	public int edgeNumber() {
 		return grafo.edgeSet().size();
 	}
-
+	
+	public Set<Country> getVerticiAttivi(){
+		return grafo.vertexSet();
+	}
+	
+	public Set<Country> getVicini(Country stato){
+		ConnectivityInspector<Country, DefaultEdge> ci = new ConnectivityInspector<Country, DefaultEdge>(grafo);
+		return ci.connectedSetOf(stato);
+	}
+	
+	public List<Country> getVicini1(Country stato){
+		GraphIterator<Country, DefaultEdge> bfi = new BreadthFirstIterator<Country, DefaultEdge>(grafo, stato);
+		List<Country> vicini = new LinkedList<Country>();
+		
+		while(bfi.hasNext()) {
+			vicini.add(bfi.next());
+		}
+		
+		return vicini;
+	}
+	
+	public List<Country> getVicini2(Country stato){
+		GraphIterator<Country, DefaultEdge> dfi = new DepthFirstIterator<Country, DefaultEdge>(grafo, stato);
+		List<Country> vicini = new LinkedList<Country>();
+		
+		while(dfi.hasNext()) {
+			vicini.add(dfi.next());
+		}
+		
+		return vicini;
+	}
 }

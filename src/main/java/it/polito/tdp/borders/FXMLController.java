@@ -3,10 +3,12 @@ package it.polito.tdp.borders;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import it.polito.tdp.borders.model.Country;
 import it.polito.tdp.borders.model.Model;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
@@ -25,7 +27,13 @@ public class FXMLController {
 
     @FXML // fx:id="txtResult"
     private TextArea txtResult; // Value injected by FXMLLoader
+    
+    @FXML
+    private ChoiceBox<Country> chStati;
 
+    @FXML
+    private Button btnTrova;
+    
     @FXML
     void doCalcolaConfini(ActionEvent event) {
     	try {
@@ -41,13 +49,31 @@ public class FXMLController {
     	} catch(Exception e) {
     		txtResult.setText("Errore!");
     	}
+    	
+    	chStati.getItems().addAll(model.getVerticiAttivi());
+    	btnTrova.setDisable(false);
+    }
+    
+    @FXML
+    void doTrovaVicini(ActionEvent event) {
+    	Country cTemp = chStati.getValue();
+    	if(cTemp == null) {
+    		txtResult.setText("Paese non selezionato");
+    		return;
+    	} else {
+    		txtResult.setText(model.getVicini(cTemp).toString()+"\n\n");
+    		txtResult.appendText(model.getVicini1(cTemp).toString()+"\n\n");
+    		txtResult.appendText(model.getVicini2(cTemp).toString());
+    	}
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
         assert txtAnno != null : "fx:id=\"txtAnno\" was not injected: check your FXML file 'Scene.fxml'.";
+        assert chStati != null : "fx:id=\"chStati\" was not injected: check your FXML file 'Scene.fxml'.";
+        assert btnTrova != null : "fx:id=\"btnTrova\" was not injected: check your FXML file 'Scene.fxml'.";
         assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Scene.fxml'.";
-
+        btnTrova.setDisable(true);
     }
     
     public void setModel(Model model) {
